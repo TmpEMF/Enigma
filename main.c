@@ -98,12 +98,12 @@ char* enigma(char initForPlugboard[2][11], int* initForRotor, int* numOfRotor, c
     }
 
     for (int i = 0; i < length; i ++) {
-        initForRotor[2] = (initForRotor[2] + 1) % 26;
+        initForRotor[2] = (initForRotor[2] + 1) % 26 + 1;
         if ((initForRotor[2] + 'A' - 1) == carrier[num[2]]) {
-            initForRotor[1] = (initForRotor[1] + 1) % 26;
+            initForRotor[1] = (initForRotor[1] + 1) % 26 + 1;
         }
         if ((initForRotor[1] + 'A' - 1) == carrier[num[1]]) {
-            initForRotor[0] = (initForRotor[0] + 1) % 26;
+            initForRotor[0] = (initForRotor[0] + 1) % 26 + 1;
         }
 
         char k1 = plugboard(initForPlugboard, code[i]);
@@ -170,7 +170,7 @@ void pause() {
     printf("Press Enter to continue...");
     fflush(stdout);
     int c;
-    while (c = getchar() != '\n'&& c != EOF);
+    while (c = getchar() != '\n' && c != EOF);
     getchar();
 }
 
@@ -254,14 +254,18 @@ int main() {
         free(upper);
     }
 
-    printf("Use \";;\" to exit.\n");
+    printf("Use");
+    color(2);
+    printf(" ;; ");
+    color(-1);
+    printf("to exit.\n");
 
     // 使用
-    for(;;) {
-        char* code = (char*)calloc(128, sizeof(char));
+    for (;;) {
+        char* code = (char*)calloc(1024, sizeof(char));
     
         printf("Content > ");
-        scanf("%127s", code);
+        scanf("%1023s", code);
 
         if (!strcmp(code, ";;")) {
             color(2);
@@ -279,7 +283,7 @@ int main() {
         }
         else {
             char* result = enigma(initForPlugboard, initForRotor, numOfRotor, codeTransformed);
-            usleep(128);
+            usleep(86);
             color(9);
             typef("%s", result);
             color(-1);
